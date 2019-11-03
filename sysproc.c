@@ -112,3 +112,9 @@ sys_getpinfo(void)
         return -1;
     return getpinfo(p, pid);
 }
+
+int
+sys_ps(void)
+{
+    return ps();
+}

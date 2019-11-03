@@ -372,6 +372,7 @@ getpinfo(struct proc_stat *proc, int pid){
     }
     return 0; //no such pid exists
 }
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -592,4 +593,10 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+int ps(void)
+{
+    procdump();
+    return 0;
 }
