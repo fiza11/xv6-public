@@ -115,6 +115,7 @@ found:
   p->etime = 0;
   p->rtime = 0;
   p->iotime = 0;
+  p->num_run = 0;
   return p;
 }
 
@@ -357,6 +358,20 @@ int waitx(int *wtime, int*rtime){
         sleep(curproc, &ptable.lock);
     }
 }
+
+int
+getpinfo(struct proc_stat *proc, int pid){
+    struct proc *p;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+        if(p->pid == pid){
+            proc->pid = pid;
+            proc->runtime = p->rtime;
+            proc->num_run = p->num_run;
+            return 1;
+        }
+    }
+    return 0; //no such pid exists
+}
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -387,8 +402,8 @@ scheduler(void)
       // before jumping back to us.
       c->proc = p;
       switchuvm(p);
+      p->num_run++;
       p->state = RUNNING;
-
       swtch(&(c->scheduler), p->context);
       switchkvm();
 

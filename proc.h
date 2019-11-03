@@ -53,8 +53,16 @@ struct proc {
   int etime;
   int rtime;
   int iotime;
+  int num_run;
 };
 
+struct proc_stat{
+    int pid;
+    int runtime;
+    int num_run;
+    int current_queue;
+    int ticks[5];
+};
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss
