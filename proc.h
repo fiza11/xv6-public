@@ -31,6 +31,20 @@ struct context {
   uint ebp;
   uint eip;
 };
+struct priorityqueue
+{
+  struct proc *queue[NPROC];
+  int ticks;
+  int end;
+  int numOfProc;
+  int priority;
+};
+
+struct priorityqueue q0;
+struct priorityqueue q1;
+struct priorityqueue q2;
+struct priorityqueue q3;struct priorityqueue q4;
+int TOTAL_TICKS;
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
@@ -49,22 +63,22 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
-  int ctime;
-  int etime;
-  int rtime;
-  int iotime;
-  int num_run;
-};
+  int priority, stime, etime, rtime, iotime, wtime;
+  int num_run; // number of time the process is executed
+  int current_queue; // current assigned queue
+  int ticks[5]; // priority add
+  int times[5];
+  int queue[500];
+  int total_ticks;
+  int wait_time;
 
-struct proc_stat{
-    int pid;
-    int runtime;
-    int num_run;
-    int current_queue;
-    int ticks[5];
-};
+  //Not in pstat
+  int Ticks;
+  };
+
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+void uprtime();

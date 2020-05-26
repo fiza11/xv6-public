@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "x86.h"
 #include "syscall.h"
+#include "procStat.h"
 
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
@@ -106,6 +107,9 @@ extern int sys_uptime(void);
 extern int sys_waitx(void);
 extern int sys_getpinfo(void);
 extern int sys_ps(void);
+extern int sys_chpr(void);
+
+
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -130,8 +134,11 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_waitx]   sys_waitx,
-[SYS_getpinfo] sys_getpinfo,
-[SYS_ps]      sys_ps,
+[SYS_getpinfo]  sys_getpinfo,
+[SYS_ps]     sys_ps,
+[SYS_chpr]    sys_chpr,
+
+
 };
 
 void

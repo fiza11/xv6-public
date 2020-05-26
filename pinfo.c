@@ -6,10 +6,11 @@
 #include "param.h"
 #include "proc.h"
 #include "fcntl.h"
+#include "procStat.h"
 
 int main(int argc, char *argv[])
 {
-    struct proc_stat pr;
+    struct procStat pr;
     if(argc == 2){
         pr.pid = -1;
         pr.num_run = -1;

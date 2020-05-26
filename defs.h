@@ -9,7 +9,7 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
-struct proc_stat;
+struct procStat;
 
 // bio.c
 void            binit(void);
@@ -121,8 +121,12 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
-int             waitx(int*, int*);
-int             getpinfo(struct proc_stat *, int);
+int  			waitx(int *,int *);
+int 			getpinfo(struct procStat * ps,int pid);
+int 			ps(void);
+int 			chpr(int pid,int priority);
+
+
 // swtch.S
 void            swtch(struct context**, struct context*);
 
@@ -187,9 +191,6 @@ void            switchuvm(struct proc*);
 void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
-
-// ps.c
-int             ps(void);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

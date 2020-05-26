@@ -6,7 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-
+#include "procStat.h"
 int
 sys_fork(void)
 {
@@ -89,32 +89,34 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-
-int
-sys_waitx(void)
-{
-    int *wtime, *rtime;
-    if(argptr(0, (char**)&wtime, sizeof(int)) < 0)
-        return 12;
-    if(argptr(1, (char**)&rtime, sizeof(int)) < 0)
-        return 13;
-    return waitx(wtime, rtime);
-}
-
-int
-sys_getpinfo(void)
-{
-    struct proc_stat *p;
-    int pid;
-    if(argptr(0, (char**)&p, sizeof(struct proc_stat)) < 0)
-        return -1;
-    if(argint(1, &pid) < 0)
-        return -1;
-    return getpinfo(p, pid);
-}
-
 int
 sys_ps(void)
 {
-    return ps();
+  return ps();
+}
+int sys_chpr(void)
+{
+  int pid, priority;
+  if (argint(0, &pid) < 0 || argint(1, &priority) < 0)
+    return -1;
+  return chpr(pid, priority);
+}
+int
+sys_waitx(void)
+{
+  int *wtime, *rtime;
+
+  if((argptr(0, (char**)&wtime, sizeof(int)) < 0) || (argptr(1, (char**)&rtime, sizeof(int)) < 0))
+    return -1;
+  return waitx(wtime, rtime);
+}
+int
+sys_getpinfo(void)
+{
+  struct procStat* ps;
+  int pid;
+
+  if((argptr(0, (char**)&ps, sizeof(struct procStat)) < 0) || (argint(1, &pid) < 0))
+    return -1;
+  return getpinfo(ps, pid);
 }
